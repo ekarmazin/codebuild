@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=264579978818.dkr.ecr.us-east-1.amazonaws.com/microservice/buildtest
+      - echo Installing codebuild-extras...
+      - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install >> extras.sh
+      - . ./extras.sh
+      - echo "COMMIT HASH"
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo "SOURCE VERSION"
+      - echo $CODEBUILD_WEBHOOK_TRIGGER
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - COMMIT_VER=$(echo $CODEBUILD_WEBHOOK_TRIGGER)
+      - IMAGE_TAG=staging-${COMMIT_VER}-${COMMIT_HASH:=latest}
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:latest -f docker/Dockerfile .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo $IMAGE_TAG
+      - echo Pushing the Docker images...
+#      - docker push $REPOSITORY_URI:$IMAGE_TAG
