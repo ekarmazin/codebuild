@@ -7,12 +7,9 @@ phases:
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=264579978818.dkr.ecr.us-east-1.amazonaws.com/microservice/buildtest
-      - echo Installing codebuild-extras...
-      - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install >> extras.sh
-      - . ./extras.sh
-      - echo "COMMIT HASH"
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
-      - echo "SOURCE VERSION"
+      - echo $CODEBUILD_SOURCE_REPO_URL
+      - echo $CODEBUILD_SOURCE_VERSION
       - echo $CODEBUILD_WEBHOOK_TRIGGER
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - COMMIT_VER=$(echo $CODEBUILD_WEBHOOK_TRIGGER)
