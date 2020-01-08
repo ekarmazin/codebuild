@@ -6,7 +6,7 @@ env:
 phases:
   pre_build:
     commands:
-      - Getting git stuff in to work
+      - echo "Getting git stuff in to work"
       - scripts/codebuild-git-wrapper.sh https://github.com/ekarmazin/codebuild.git master
       - git log | head -5
       - echo Logging in to Amazon ECR...
