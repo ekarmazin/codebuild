@@ -6,11 +6,12 @@ env:
 phases:
   pre_build:
     commands:
+      - Getting git stuff in to work
+      - scripts/codebuild-git-wrapper.sh https://github.com/ekarmazin/codebuild.git master
+      - git log | head -5
       - echo Logging in to Amazon ECR...
-      - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=264579978818.dkr.ecr.us-east-1.amazonaws.com/microservice/buildtest
-      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - COMMIT_TAG=$(git tag -l --points-at $CODEBUILD_RESOLVED_SOURCE_VERSION)
       - IMAGE_TAG=staging$(if [ $COMMIT_TAG ]; then echo -$COMMIT_TAG; else echo ""; fi)-${COMMIT_HASH:=latest}
