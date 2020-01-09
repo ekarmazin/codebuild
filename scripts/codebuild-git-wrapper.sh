@@ -36,7 +36,7 @@ fi
 # Read arguments
 REPO_URL="$1"
 if [ ! -z "${2:-}" ]; then
-  BRANCH=$2
+  DEPLOY_BRANCH=$2
 fi
 
 # Remember the working directory
@@ -47,6 +47,8 @@ WORKING_DIR="$(pwd)"
 # hopefully it will in the future
 TEMP_FOLDER="$(mktemp -d)"
 git clone --quiet "$REPO_URL" "$TEMP_FOLDER"
+
+BRANCH=$(git branch --list ${DEPLOY_BRANCH} --sort=-committerdate --format='%(refname:short)' | head -n 1)
 
 # Wind the repository back to the specified branch and commit
 cd "$TEMP_FOLDER"
@@ -65,3 +67,5 @@ if [ ! -d  .git ] ; then
 fi
 
 mv .git "$WORKING_DIR"
+
+#git branch --list 'release-*' --sort=-committerdate --format='%(refname:short)' | head -n 1
