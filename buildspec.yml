@@ -8,7 +8,7 @@ phases:
     commands:
       - echo "Getting git stuff in to work"
       - curl -s -O -L  https://$GITHUB_TOKEN@raw.githubusercontent.com/sweet-io/devops-tools-and-scripts/master/ci/cd/codebuild-git-wrapper.sh
-      - chmod + x codebuild-git-wrapper.sh
+      - chmod +x codebuild-git-wrapper.sh
       - ./codebuild-git-wrapper.sh $REPO_URL $DEPLOY_BRANCH
       - git log | head -5
       - echo Logging in to Amazon ECR...
