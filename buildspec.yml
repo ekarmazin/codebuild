@@ -14,7 +14,7 @@ phases:
       - REPOSITORY_URI=264579978818.dkr.ecr.us-east-1.amazonaws.com/microservice/buildtest
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - COMMIT_TAG=$(git tag -l --points-at $CODEBUILD_RESOLVED_SOURCE_VERSION)
-      - IMAGE_TAG=$(if [[ $STAGE == "production" ]]; then echo ""; else echo $STAGE; fi)$(if [ $COMMIT_TAG ]; then echo -$COMMIT_TAG; else echo ""; fi)-${COMMIT_HASH:=latest}
+      - IMAGE_TAG=$(if [[ $STAGE == "production" ]]; then echo ""; else echo $STAGE-; fi)$(if [ $COMMIT_TAG ]; then echo $COMMIT_TAG; else echo ""; fi)-${COMMIT_HASH:=latest}
   build:
     commands:
       - echo Build started on `date`
