@@ -7,7 +7,8 @@ phases:
   pre_build:
     commands:
       - echo "Getting git stuff in to work"
-      - scripts/codebuild-git-wrapper.sh $REPO_URL $DEPLOY_BRANCH
+      - curl -fsSL https://github.com/sweet-io/devops-tools-and-scripts/raw/master/ci/cd/codebuild-git-wrapper.sh >> codebuild-git-wrapper.sh
+      - . ./codebuild-git-wrapper.sh $REPO_URL $DEPLOY_BRANCH
       - git log | head -5
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
