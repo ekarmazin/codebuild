@@ -10,7 +10,6 @@ phases:
       - curl -s -O -L  https://$GITHUB_TOKEN@raw.githubusercontent.com/sweet-io/devops-tools-and-scripts/master/ci/cd/codebuild-git-wrapper.sh
       - chmod +x codebuild-git-wrapper.sh
       - ./codebuild-git-wrapper.sh $REPO_URL $DEPLOY_BRANCH
-      - git log | head -5
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=264579978818.dkr.ecr.us-east-1.amazonaws.com/microservice/buildtest
